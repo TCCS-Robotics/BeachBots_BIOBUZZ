@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.norm
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -41,7 +42,7 @@ public class Teleop extends OpMode {
         // Update Pinpoint before calculating field-relative drive.
         robot.odo.update();
 
-        // GAMEPAD 1: BAck resets position and IMU once per button press.
+        // GAMEPAD 1: Back resets position and IMU once per button press.
         if (gamepad1.back && !previousResetButton) {
             robot.odo.resetPosAndIMU();
         }
@@ -57,16 +58,18 @@ public class Teleop extends OpMode {
                 //////////////   LAUNCHER   //////////////
 
         // GAMEPAD 2: hold right bumper to spin up and launch.
-        boolean launchRequested = gamepad2.right_bumper;
-        robot.launcher.setVelocity(launchRequested ? robot.LAUNCHER_TARGET_VELOCITY : 0);
-        boolean readyToFeed = launchRequested
-                && robot.launcher.getVelocity() > robot.LAUNCHER_MIN_VELOCITY;
+        if (gamepad2.right_bumper) {
+            robot.launcher.setVelocity(robot.LAUNCHER_TARGET_VELOCITY);
+        }
+        else {
+            robot.launcher.setPower(0);
+        }
 
-        if (readyToFeed) {
+        if (gamepad2.a) {
+            robot.windmillServo.setDirection(CRServo.Direction.FORWARD);
             robot.windmillServo.setPower(1);
-            // StarterBot adds intake power to help clear the hopper during launch.
-            intakePower += 0.5;
-        } else {
+        }
+        else {
             robot.windmillServo.setPower(0);
         }
 
@@ -117,9 +120,7 @@ public class Teleop extends OpMode {
         telemetry.addData("Drive mode", gamepad1.left_bumper ? "Robot-centric" : "Field-centric");
         telemetry.addData("Heading (radians)", robot.odo.getHeading(AngleUnit.RADIANS));
         telemetry.addData("Intake power", intakePower);
-        telemetry.addData("Launcher target (ticks/s)", launchRequested ? robot.LAUNCHER_TARGET_VELOCITY : 0);
         telemetry.addData("Launcher actual (ticks/s)", robot.launcher.getVelocity());
-        telemetry.addData("Feeding", readyToFeed);
         telemetry.addLine("Press Back to reset Yaw");
         telemetry.addLine("Hold Left Bumper for Robot Centric");
         telemetry.addLine("Hold Right Trigger for Slow Mode");

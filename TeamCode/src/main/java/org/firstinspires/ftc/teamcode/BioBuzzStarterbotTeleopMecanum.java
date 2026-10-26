@@ -73,8 +73,8 @@ public class BioBuzzStarterbotTeleopMecanum extends OpMode {
      * in the launch() function to only run the windmill servo when the motor is spinning fast
      * enough to make a successful throw.
      */
-    public final int LAUNCHER_TARGET_VELOCITY = 1250; //2678 RPM
-    public final int LAUNCHER_MIN_VELOCITY = 1200; //2571 RPM
+    public final int LAUNCHER_TARGET_VELOCITY = 2500; //2678 RPM   6000prm 28 ticks per rev s
+    public final int LAUNCHER_MIN_VELOCITY = 400; //2571 RPM
 
 
     /*
@@ -144,7 +144,7 @@ public class BioBuzzStarterbotTeleopMecanum extends OpMode {
 
         launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(40, 0, 0, 12.5));
+        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(1, 0, 0, 11.5));
 
         /*
          * set Feeders to an initial value to initialize the servo controller
@@ -185,6 +185,14 @@ public class BioBuzzStarterbotTeleopMecanum extends OpMode {
      */
     @Override
     public void loop() {
+        // Read actual encoder velocity
+        double actualTPS = launcher.getVelocity();
+
+        // Convert measured velocity to RPM
+        double actualRPM =
+                actualTPS * 60.0 / 28;
+        telemetry.addData("Actual RPM", "%.0f", actualRPM);
+
         /*
          * Here we call a function called mecanumDrive. The mecanumDrive function takes the input from
          * the joysticks, and applies power to the drive motors to move the robot as requested

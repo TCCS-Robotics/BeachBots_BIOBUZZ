@@ -47,23 +47,20 @@ public class RobotHardware {
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
 
         // Servos
-        leftIntakeServo = hardwareMap.get(
-                CRServo.class, "left_intake_servo");
-        rightIntakeServo = hardwareMap.get(
-                CRServo.class, "right_intake_servo");
-        windmillServo = hardwareMap.get(
-                CRServo.class, "windmillServo");
+        leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
+        rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
+        windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
 
         // Sensors
         odo = hardwareMap.get(
                 GoBildaPinpointDriver.class, "odo");
 
         // Motor Directions
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Brake Mode
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -73,16 +70,13 @@ public class RobotHardware {
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Servo Directions
-        rightIntakeServo.setDirection(
-                DcMotorSimple.Direction.REVERSE);
-        windmillServo.setDirection(
-                DcMotorSimple.Direction.REVERSE);
+        rightIntakeServo.setDirection(CRServo.Direction.REVERSE);
+        windmillServo.setDirection(CRServo.Direction.FORWARD);
 
         // Launcher Configuration
         launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        launcher.setPIDFCoefficients(
-                DcMotor.RunMode.RUN_USING_ENCODER,
-                new PIDFCoefficients(40, 0, 0, 12.5));
+        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                new PIDFCoefficients(1, 0, 0, 11.5));
 
         // Initialize Servos
         leftIntakeServo.setPower(0);
