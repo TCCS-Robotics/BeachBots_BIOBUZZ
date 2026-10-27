@@ -22,7 +22,7 @@ public class BeachBotsAuto extends OpMode {
     private static final double INTAKE_POWER = 0.5; // Feed balls once launcher is up to speed.
     private static final double DRIVE_SPEED = 0.5; // Range 0.0 to 1.0.
     private static final double DRIVE_TIMEOUT_SECONDS = 3.0; // Safety limit for drive.
-    private static final double BACKWARD_DISTANCE_IN = 120.0 / 25.4; // Original StarterBot -120 mm.
+
 
     private final ElapsedTime autoTimer = new ElapsedTime();
 
@@ -63,16 +63,22 @@ public class BeachBotsAuto extends OpMode {
     public void loop() {
         // Each pass through loop() executes the current state, then updates telemetry.
         switch (autoState) {
+
+        //Launch 4 pollen into upwards facing cell
+        //Place robot on back wall facing wall (Back to Hive)
+        //DeSCRIBE HORIZONTAL PLACEMENT HERE
             case LAUNCH:
     ///////////////////// LAUNCHER CONTROLS /////////////////////
+              //Starts Flywheel
                 robot.launcher.setVelocity(RobotHardware.LAUNCHER_TARGET_VELOCITY);
 
-                // Only feed when the measured launcher velocity is high enough.
+                // Turns the windmill once the flywheel gets to the target velocity
                 boolean launcherReady = robot.launcher.getVelocity()
                         >= RobotHardware.LAUNCHER_MIN_VELOCITY;
                 robot.windmillServo.setPower(launcherReady ? 1.0 : 0.0);
                 robot.intake.setPower(launcherReady ? INTAKE_POWER : 0.0);
 
+                //Times out after 10 seconds so if it's stuck it will go to the next line of code
                 if (autoTimer.seconds() >= LAUNCH_TIME_SECONDS) {
                     stopMechanisms();
                     autoState = AutoState.START_DRIVE;
@@ -81,9 +87,9 @@ public class BeachBotsAuto extends OpMode {
 
             case START_DRIVE:
     ///////////////////// BEGIN BACKWARD MOVEMENT /////////////////////
-                // This method starts the movement and returns immediately.
+                // Drive the robot Backward @ 50% power for
                 // Do not call it repeatedly in DRIVING or the targets would restart.
-                if (drive.backward(BACKWARD_DISTANCE_IN, DRIVE_SPEED, DRIVE_TIMEOUT_SECONDS)) {
+                if (drive.backward(5, DRIVE_SPEED, DRIVE_TIMEOUT_SECONDS)) {
                     autoState = AutoState.DRIVING;
                 } else {
                     autoState = AutoState.ERROR; // Reject invalid or overlapping commands.
@@ -91,7 +97,8 @@ public class BeachBotsAuto extends OpMode {
                 break;
 
             case DRIVING:
-    ///////////////////// CHECK MOTOR ENCODERS /////////////////////
+            //Check the motors to make sure the drive code is stil running
+        ///////////////////// CHECK MOTOR ENCODERS /////////////////////
                 // update() checks all four wheels and the safety timeout.
                 driveResult = drive.update();
                 if (driveResult == MecanumAutoDrive.Result.SUCCESS) {

@@ -64,7 +64,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(name="StarterBotAuto", group="StarterBot")
 //@Disabled
-public class StarterBotAuto extends OpMode
+public class StarterAuto_Edited extends OpMode
 {
     /*
      * These two variables are used to control the velocity of the launcher motor.
@@ -167,7 +167,7 @@ public class StarterBotAuto extends OpMode
         frontRightDrive = hardwareMap.get(DcMotor.class, "motorBR");
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        windmillServo = hardwareMap.get(CRServo.class, "windmill");
+        windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
         leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
         rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
 

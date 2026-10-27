@@ -30,8 +30,8 @@ public class RobotHardware {
     public GoBildaPinpointDriver odo;
 
     // LAUNCHER SETTINGS - Target and Min Velocity
-    public static final int LAUNCHER_TARGET_VELOCITY = 1250;
-    public static final int LAUNCHER_MIN_VELOCITY = 1200;
+    public static final int LAUNCHER_TARGET_VELOCITY = 500;
+    public static final int LAUNCHER_MIN_VELOCITY = 400;
 
     //////////////////////////    INITIALIZE ALL HARDWARE    /////////////////////////////
     public void init(HardwareMap hardwareMap) {
