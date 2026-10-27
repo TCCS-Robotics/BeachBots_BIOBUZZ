@@ -2,23 +2,21 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.normalizeRadians;
 
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Background.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Background.MecanumDrive_Smooth;
 import org.firstinspires.ftc.teamcode.Background.RobotHardware;
 
 @TeleOp(name = "Beach Bots Teleop", group = "Robot")
 //@Disabled
-public class Teleop extends OpMode {
+public class BeachBotsTeleop extends OpMode {
 
     //Import Hardware Class & Mecanum Drive Class
     RobotHardware robot = new RobotHardware();
-    MecanumDrive drive;
+    MecanumDrive_Smooth drive;
 
     //Declare variables
     private boolean previousResetButton = false;
@@ -29,7 +27,7 @@ public class Teleop extends OpMode {
     public void init() {
         //Initialize Hardware Class & Mecanum Drive Class
         robot.init(hardwareMap);
-        drive = new MecanumDrive(robot);
+        drive = new MecanumDrive_Smooth(robot);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -102,7 +100,7 @@ public class Teleop extends OpMode {
         previousResetButton = gamepad1.a;
         // Slow mode while holding right trigger
         if (gamepad1.right_trigger > 0) {
-            drive.setMaxSpeed(0.10);
+            drive.setMaxSpeed(0.25);
         } else {
             drive.setMaxSpeed(1.0);
         }
